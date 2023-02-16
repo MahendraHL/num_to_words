@@ -4,70 +4,31 @@ class Num_to_Wrd {
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
         System.out.print("Enter a number between 0-9999: ");
-        String num = s.next();
-        convertToWords(num);
-    }
-    public static void convertToWords(String num) {
-    int length = num.length();
-
-    // Base cases
-    if (length == 0) {
-        System.out.println("empty string");
-        return;
-    }
-    if (length > 4) {
-        System.out.println("Length more than 4 is not supported");
-        return;
-    }
-
-    String[] singleDigit = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
-
-    String[] twoDigits = {"", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"};
-
-    String[] tensMultiples = {"", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"};
-
-    String[] tensPower = {"hundred", "thousand"};
-
-    System.out.print(num + ": ");
-
-    if (length == 1) {
-        int digit = num.charAt(0) - 48;
-        System.out.println(singleDigit[digit]);
-        return;
-    }
-
-    int x = 0;
-    while (x < length) {
-        if (length >= 3) {
-            int digit = num.charAt(x) - 48;
-            if (digit != 0) {
-                System.out.print(singleDigit[digit] + " ");
-                System.out.print(tensPower[length - 3] + " ");
-            }
-            length--;
+        int num = s.nextInt();
+        if (num < 0 || num > 9999) {
+            System.out.println("Number out of range");
+        } else if (num == 0) {
+            System.out.println("zero");
         } else {
-            int digit1 = num.charAt(x) - 48;
-            if (digit1 == 1) {
-                int sum = digit1 + num.charAt(x + 1) - 48;
-                System.out.println(twoDigits[sum]);
-                return;
-            } else if (digit1 == 2 && num.charAt(x + 1) - 48 == 0) {
-                System.out.println("twenty");
-                return;
-            } else {
-                if (digit1 > 0) {
-                    System.out.print(tensMultiples[digit1] + " ");
-                } else {
-                    System.out.print("");
-                }
-                x++;
-                int digit2 = num.charAt(x) - 48;
-                if (digit2 != 0) {
-                    System.out.println(singleDigit[digit2]);
-                }
-            }
+            String result = convertToWords(num);
+            System.out.println(num + ": " + result);
         }
-        x++;
     }
-}
+
+    public static String convertToWords(int num) {
+        String[] singleDigit = {"", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+                "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"};
+
+        String[] tensMultiples = {"", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"};
+
+        if (num < 20) {
+            return singleDigit[num];
+        } else if (num < 100) {
+            return tensMultiples[num / 10] + ((num % 10 != 0) ? " " + singleDigit[num % 10] : "");
+        } else if (num < 1000) {
+            return singleDigit[num / 100] + " hundred" + ((num % 100 != 0) ? " and " + convertToWords(num % 100) : "");
+        } else {
+            return convertToWords(num / 1000) + " thousand" + ((num % 1000 != 0) ? " " + convertToWords(num % 1000) : "");
+        }
+    }
 }
