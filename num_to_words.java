@@ -28,7 +28,7 @@ class Num_to_Wrd {
         } else if (num < 1000) {
             return singleDigit[num / 100] + " hundred" + ((num % 100 != 0) ? " and " + convertToWords(num % 100) : "");
         } else {
-            return convertToWords(num / 1000) + " - " + ((num % 1000 != 0) ? " " + convertToWords(num % 1000) : "");
+            return convertToWords(num / 1000) + " thousand" + ((num % 1000 != 0) ? " " + convertToWords(num % 1000) : "");
         }
     }
 }
